@@ -4,10 +4,6 @@ import { db } from "../db";
 import { sessions, users } from "../db/schema";
 import { hashToken, SESSION_COOKIE } from "../features/auth/session";
 
-/**
- * Turns a session cookie into req.user, or rejects with 401.
- * Failure ladder: no cookie -> no matching row -> expired -> reject.
- */
 export function requireAuth(
   req: Request,
   res: Response,

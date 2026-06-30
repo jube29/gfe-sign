@@ -4,20 +4,14 @@ import { db } from "../../db";
 import { sessions } from "../../db/schema";
 
 export const SESSION_COOKIE = "session";
-const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7;
 
-/**
- * SHA-256 of the raw cookie token. The token is high-entropy (randomBytes),
- * so a fast hash is fine — we only need irreversibility, not slow hashing.
- */
+// SHA-256 of the raw cookie token. The token is high-entropy (randomBytes),
+// so a fast hash is fine — we only need irreversibility, not slow hashing.
 export function hashToken(rawToken: string): string {
   return createHash("sha256").update(rawToken).digest("hex");
 }
 
-/**
- * Generate a new session for a user: store the HASH, hand back the RAW token
- * (the only place the raw value ever exists — it goes straight into the cookie).
- */
 export function createSession(userId: number): {
   token: string;
   expiresAt: Date;

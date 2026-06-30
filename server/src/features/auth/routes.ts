@@ -73,7 +73,6 @@ authRouter.post("/signin", async (req, res) => {
 });
 
 authRouter.get("/me", requireAuth, (req, res) => {
-  // requireAuth guarantees req.user is set.
   res.json({ email: req.user?.email });
 });
 

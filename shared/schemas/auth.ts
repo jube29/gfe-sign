@@ -1,19 +1,10 @@
 import { z } from "zod";
 
-/**
- * Sign-in — per requirements §3, ONLY non-empty checks.
- * No format/complexity validation on login: we verify against a stored hash,
- * not a policy, and we keep the failure surface uniform (generic error).
- */
 export const signInSchema = z.object({
   email: z.string().trim().toLowerCase().min(1, "Email is required"),
   password: z.string().min(1, "Password is required"),
 });
 
-/**
- * Sign-up — full validation. Email format + the 5 password-complexity rules
- * + Terms-of-Service must be explicitly true.
- */
 export const signUpSchema = z.object({
   email: z
     .string()

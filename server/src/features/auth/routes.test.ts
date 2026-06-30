@@ -12,12 +12,10 @@ const VALID = {
 };
 
 beforeAll(() => {
-  // The in-memory DB starts empty — apply migrations to create the tables.
   migrate(db, { migrationsFolder: "./drizzle" });
 });
 
 beforeEach(() => {
-  // Isolate every test: wipe sessions first (FK child), then users.
   db.delete(sessions).run();
   db.delete(users).run();
 });
@@ -112,7 +110,7 @@ describe("GET /auth/me", () => {
   });
 
   it("returns the user's email with a valid session cookie", async () => {
-    const agent = request.agent(app); // persists cookies across requests
+    const agent = request.agent(app);
     await agent.post("/auth/signup").send(VALID);
 
     const res = await agent.get("/auth/me");
@@ -133,7 +131,6 @@ describe("POST /auth/signout", () => {
     const me = await agent.get("/auth/me");
     expect(me.status).toBe(401);
 
-    // The session row is gone from the DB, not just the cookie.
     expect(db.select().from(sessions).all()).toHaveLength(0);
   });
 });
